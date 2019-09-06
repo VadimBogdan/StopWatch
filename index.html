@@ -26,7 +26,7 @@
                 type="button"
                 id="pause_b"
                 class="b"
-                onclick="pauseUnpauseStopWatch()"
+                onclick="onPauseButtonClick()"
             >
                 Pause
             </button>
@@ -57,6 +57,43 @@
                 miliseconds: 0
             };
 
+            function onPauseButtonClick() {
+                if (pauseUnpauseButtonTextNode.textContent.trim() === 'Pause') {
+                    pauseStopWatch();
+                } else {
+                    unPauseStopWatch();
+                }
+            }
+
+            function pauseStopWatch() {
+                clearInterval(interval);
+
+                pauseUnpauseButtonTextNode.nodeValue = 'Unpause';
+            }
+
+            function unPauseStopWatch() {
+                initialTime = 0;
+                resumeStopWatch();
+
+                pauseUnpauseButtonTextNode.nodeValue = 'Pause';
+            }
+
+            function startStopWatch() {
+                if (interval) {
+                    return;
+                }
+
+                isIntialTime();
+
+                setStopWatchInterval();
+            }
+
+            function resumeStopWatch() {
+                isIntialTime();
+
+                resumeStopWatchInterval();
+            }
+
             function clearStopWatch() {
                 if (interval) {
                     let elem = document.createElement('LI');
@@ -78,53 +115,11 @@
                 }
             }
 
-            function pauseUnpauseStopWatch() {
-                if (nextTime && interval) {
-                    clearInterval(interval);
-                    pastTime = nextTime;
-                    nextTime = 0;
-                    initialTime = 0;
-                    pauseUnpauseButtonTextNode.nodeValue = 'Unpause';
-                } else if (pastTime && interval) {
-                    nextTime = pastTime;
-                    pastTime = 0;
-                    resumeStopWatch();
-                    pauseUnpauseButtonTextNode.nodeValue = 'Pause';
-                }
-            }
-
-            function resumeStopWatch() {
-                isIntialTime();
-
-                resumeStopWatchInterval();
-            }
-
-            function startStopWatch() {
-                if (interval) {
-                    return;
-                }
-
-                isIntialTime();
-
-                setStopWatchInterval();
-            }
-
-            function isIntialTime() {
-                if (!initialTime) {
-                    initialTime = Date.now();
-                }
-            }
-
             function setStopWatchInterval() {
                 interval = setInterval(() => {
                     nextTime = Date.now() - initialTime;
 
-                    time.hours = Math.floor((nextTime / 1000 / 60 / 60) % 60);
-                    time.minutes = Math.floor((nextTime / 1000 / 60) % 60);
-                    time.seconds = Math.floor((nextTime / 1000) % 60);
-                    time.miliseconds = Math.floor(nextTime % 1000);
-
-                    stopwatchTextNode.nodeValue = ` ${time.hours}:${time.minutes}:${time.seconds}:${time.miliseconds}`;
+                    setNewTime();
                 });
             }
 
@@ -133,13 +128,23 @@
                 interval = setInterval(() => {
                     nextTime = Date.now() - initialTime + pastTime;
 
-                    time.hours = Math.floor((nextTime / 1000 / 60 / 60) % 60);
-                    time.minutes = Math.floor((nextTime / 1000 / 60) % 60);
-                    time.seconds = Math.floor((nextTime / 1000) % 60);
-                    time.miliseconds = Math.floor(nextTime % 1000);
-
-                    stopwatchTextNode.nodeValue = ` ${time.hours}:${time.minutes}:${time.seconds}:${time.miliseconds}`;
+                    setNewTime();
                 });
+            }
+
+            function setNewTime() {
+                time.hours = Math.floor((nextTime / 1000 / 60 / 60) % 60);
+                time.minutes = Math.floor((nextTime / 1000 / 60) % 60);
+                time.seconds = Math.floor((nextTime / 1000) % 60);
+                time.miliseconds = Math.floor(nextTime % 1000);
+
+                stopwatchTextNode.nodeValue = ` ${time.hours}:${time.minutes}:${time.seconds}:${time.miliseconds}`;
+            }
+
+            function isIntialTime() {
+                if (!initialTime) {
+                    initialTime = Date.now();
+                }
             }
         </script>
     </body>
