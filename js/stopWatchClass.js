@@ -19,7 +19,6 @@ class StopWatch {
     this.time.seconds = Math.floor((this.nextTime / 1000) % 60);
     this.time.miliseconds = Math.floor(this.nextTime % 1000);
 
-    this.textNode.nodeValue = ` ${this.time.hours}:${this.time.minutes}:
-    ${this.time.seconds}:${this.time.miliseconds}`;
+    this.textNode.nodeValue = ` ${this.time.hours}:${this.time.minutes}:${this.time.seconds}:${this.time.miliseconds}`;
   }
 }

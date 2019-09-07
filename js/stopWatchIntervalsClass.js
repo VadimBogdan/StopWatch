@@ -1,11 +1,11 @@
 class StopWatchIntervals {
-  setInitialTime(stopwatch) {
+  static setInitialTime(stopwatch) {
     if (!stopwatch.initialTime) {
       stopwatch.initialTime = Date.now();
     }
   }
 
-  resumeStopWatchInterval(stopwatch) {
+  static resumeStopWatchInterval(stopwatch) {
     stopwatch.pastTime = stopwatch.nextTime;
     stopwatch.interval = setInterval(() => {
       stopwatch.nextTime =
@@ -15,7 +15,7 @@ class StopWatchIntervals {
     });
   }
 
-  InitializeRootStopWatchInverval(stopwatch) {
+  static InitializeRootStopWatchInverval(stopwatch) {
     stopwatch.interval = setInterval(() => {
       stopwatch.nextTime = Date.now() - stopwatch.initialTime;
 

@@ -1,9 +1,6 @@
-var stopwatchTextNodeCurrent = null;
-var pauseUnpauseButtonTextNodeCurrent = null;
-var stopWatchIntervals = new StopWatchIntervals();
+var stopWatchEventHandler = new StopWatchEventHadler();
+var stopWatchList = new StopWatchList();
 
-var rootStopWatch = false;
-
-var stopWatches = [
+stopWatchList._stopWatches.push(
   new StopWatch(document.getElementById('stopwatches').childNodes[1])
-];
+);
