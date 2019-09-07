@@ -1,5 +1,6 @@
 class StopWatchList {
   constructor() {
+    
     var _stopWatches = [];
     this.addStopWatch = function(stopwatch) {
       _stopWatches.push(stopwatch);
@@ -21,6 +22,10 @@ class StopWatchList {
 
       return index;
     };
+    this.addStopWatch(
+      new StopWatch(document.getElementById('stopwatches').childNodes[1])
+    );
+    
   }
 
   clear(button, stopWatchEventHandler) {
