@@ -1,151 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Stopwatch</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Stopwatch</title>
 
-        <style>
-            .b {
-                font-size: 15px;
-            }
-            #bs_container {
-                margin-bottom: 25px;
-            }
-        </style>
-    </head>
-    <body>
-        <p>Stopwatch output:<span id="storage"> hi</span></p>
+    <style>
+      .b {
+        font-size: 15px;
+      }
+      #bs_container {
+        margin-bottom: 25px;
+      }
+      #addone_b {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="addone_b" onclick="addOneStopWatch()">+</button>
+    <section id="stopwatches">
+      <div class="stopwatch">
+        <p>Stopwatch output:<span name="storage"> hi</span></p>
 
         <div id="bs_container">
-            <button type="button" class="b" onclick="startStopWatch()">
-                Start
-            </button>
-            <button
-                type="button"
-                id="pause_b"
-                class="b"
-                onclick="onPauseButtonClick()"
-            >
-                Pause
-            </button>
-            <button type="button" class="b" onclick="clearStopWatch()">
-                Clear
-            </button>
+          <button type="button" class="b" onclick="startStopWatch(this)">
+            Start
+          </button>
+          <button
+            type="button"
+            id="pause_b"
+            class="b"
+            onclick="onPauseButtonClick(this)"
+          >
+            Pause
+          </button>
+          <button type="button" class="b" onclick="clearStopWatch(this)">
+            Clear
+          </button>
         </div>
+      </div>
+    </section>
 
-        <hr />
-        <h1>History</h1>
-        <div id="history">
-            <ol></ol>
-        </div>
-        <script>
-            var stopwatchTextNode = document.getElementById('storage')
-                .firstChild;
-            var pauseUnpauseButtonTextNode = document.getElementById('pause_b')
-                .firstChild;
-            var interval = null;
-            var initialTime = 0;
-            var nextTime = 0;
-            var pastTime = 0;
+    <hr />
 
-            var time = {
-                hours: 0,
-                minutes: 0,
-                seconds: 0,
-                miliseconds: 0
-            };
+    <section>
+      <h1>History</h1>
+      <div id="history">
+        <ol></ol>
+      </div>
+    </section>
 
-            function onPauseButtonClick() {
-                if (pauseUnpauseButtonTextNode.textContent.trim() === 'Pause') {
-                    pauseStopWatch();
-                } else {
-                    unPauseStopWatch();
-                }
-            }
-
-            function pauseStopWatch() {
-                clearInterval(interval);
-
-                pauseUnpauseButtonTextNode.nodeValue = 'Unpause';
-            }
-
-            function unPauseStopWatch() {
-                initialTime = 0;
-                resumeStopWatch();
-
-                pauseUnpauseButtonTextNode.nodeValue = 'Pause';
-            }
-
-            function startStopWatch() {
-                if (interval) {
-                    return;
-                }
-
-                isIntialTime();
-
-                setStopWatchInterval();
-            }
-
-            function resumeStopWatch() {
-                isIntialTime();
-
-                resumeStopWatchInterval();
-            }
-
-            function clearStopWatch() {
-                if (interval) {
-                    let elem = document.createElement('LI');
-
-                    elem.textContent = stopwatchTextNode.nodeValue;
-                    document
-                        .getElementById('history')
-                        .childNodes[1].appendChild(elem);
-
-                    clearInterval(interval);
-                    interval = null;
-                    nextTime = 0;
-                    pastTime = 0;
-                    initialTime = 0;
-                    stopwatchTextNode.nodeValue = '';
-                    if (pauseUnpauseButtonTextNode.nodeValue === 'Unpause') {
-                        pauseUnpauseButtonTextNode.nodeValue = 'Pause';
-                    }
-                }
-            }
-
-            function setStopWatchInterval() {
-                interval = setInterval(() => {
-                    nextTime = Date.now() - initialTime;
-
-                    setNewTime();
-                });
-            }
-
-            function resumeStopWatchInterval() {
-                pastTime = nextTime;
-                interval = setInterval(() => {
-                    nextTime = Date.now() - initialTime + pastTime;
-
-                    setNewTime();
-                });
-            }
-
-            function setNewTime() {
-                time.hours = Math.floor((nextTime / 1000 / 60 / 60) % 60);
-                time.minutes = Math.floor((nextTime / 1000 / 60) % 60);
-                time.seconds = Math.floor((nextTime / 1000) % 60);
-                time.miliseconds = Math.floor(nextTime % 1000);
-
-                stopwatchTextNode.nodeValue = ` ${time.hours}:${time.minutes}:${time.seconds}:${time.miliseconds}`;
-            }
-
-            function isIntialTime() {
-                if (!initialTime) {
-                    initialTime = Date.now();
-                }
-            }
-        </script>
-    </body>
+    <script src="js/utils.js"></script>
+    <script src="js/stopWatchIntervalsClass.js"></script>
+    <script src="js/stopWatchClass.js"></script>
+    <script src="js/vars.js"></script>
+    <script src="js/pauseButton.js"></script>
+    <script src="js/startButton.js"></script>
+    <script src="js/clearButton.js"></script>
+    <script src="js/addStopWatch.js"></script>
+  </body>
 </html>
