@@ -1,26 +1,44 @@
 class StopWatchList {
   constructor() {
-    this._stopWatches = [];
+    var _stopWatches = [];
+    this.addStopWatch = function(stopwatch) {
+      _stopWatches.push(stopwatch);
+    };
+    this.getStopWatchByIndex = function(index) {
+      return _stopWatches[index];
+    };
+    this.setStopWatchByIndex = function(stopwatch, index) {
+      _stopWatches[index] = stopwatch;
+    };
+    this.findCorrectStopwatch = function(stopWatchEventHandler) {
+      let index, val;
+      index = _stopWatches.findIndex(stopwatch => {
+        return (val =
+          stopwatch.source ===
+          stopWatchEventHandler.stopwatchTextNodeCurrent.parentElement
+            .parentElement.parentElement);
+      });
+
+      return index;
+    };
   }
 
-  clear(b, stopWatchEventHandler) {
-    stopWatchEventHandler.initializeClearButtonTextNodes(b);
+  clear(button, stopWatchEventHandler) {
+    stopWatchEventHandler.initializeClearButtonTextNodes(button);
 
     let index;
 
-    if (
-      (index = stopWatchEventHandler.findCorrectStopwatch(this)) ||
-      this._stopWatches[index]
-    ) {
-      if (this._stopWatches[index].interval) {
+    index = this.findCorrectStopwatch(stopWatchEventHandler);
+    if (index === 0 || index !== undefined) {
+      if (this.getStopWatchByIndex(index).interval) {
         let elem = document.createElement('LI'),
-          stopwatch = this._stopWatches[index];
+          stopwatch = this.getStopWatchByIndex(index);
 
         elem.textContent =
           stopWatchEventHandler.stopwatchTextNodeCurrent.nodeValue;
         document.getElementById('history').childNodes[1].appendChild(elem);
 
-        clearInterval(this._stopWatches[index].interval);
+        clearInterval(this.getStopWatchByIndex(index).interval);
 
         let info = {
           source: stopwatch.source,
@@ -32,7 +50,7 @@ class StopWatchList {
         stopwatch.textNode = info.textNode;
         stopwatch.textNode.nodeValue = '';
 
-        this._stopWatches[index] = stopwatch;
+        this.setStopWatchByIndex(stopwatch, index);
 
         if (
           stopWatchEventHandler.pauseUnpauseButtonTextNodeCurrent.nodeValue ===
@@ -54,48 +72,54 @@ class StopWatchList {
 
     document.getElementById('stopwatches').appendChild(clone);
 
-    this._stopWatches.push(
+    this.addStopWatch(
       new StopWatch(document.getElementById('stopwatches').lastChild)
     );
   }
 
-  start(b, stopWatchEventHandler) {
-    stopWatchEventHandler.initializeStartButtonTextNodes(b);
+  start(button, stopWatchEventHandler) {
+    stopWatchEventHandler.initializeStartButtonTextNodes(button);
 
     let index;
     if (
-      (index = stopWatchEventHandler.findCorrectStopwatch(this)) ||
-      this._stopWatches[index]
+      (index = this.findCorrectStopwatch(stopWatchEventHandler)) ||
+      this.getStopWatchByIndex(index)
     ) {
-      if (this._stopWatches[index].interval) {
+      if (this.getStopWatchByIndex(index).interval) {
         return;
       }
 
-      StopWatchIntervals.setInitialTime(this._stopWatches[index]);
+      StopWatchIntervals.setInitialTime(this.getStopWatchByIndex(index));
 
       StopWatchIntervals.InitializeRootStopWatchInverval(
-        this._stopWatches[index]
+        this.getStopWatchByIndex(index)
       );
     }
   }
 
-  pause(b, stopWatchEventHandler) {
-    stopWatchEventHandler.initializePauseButtonTextNodes(b);
+  pause(button, stopWatchEventHandler) {
+    stopWatchEventHandler.initializePauseButtonTextNodes(button);
 
     let index;
 
     if (
-      (index = stopWatchEventHandler.findCorrectStopwatch(this)) ||
-      this._stopWatches[index]
+      (index = this.findCorrectStopwatch(stopWatchEventHandler)) ||
+      this.getStopWatchByIndex(index)
     ) {
-      if (this._stopWatches[index].interval) {
+      if (this.getStopWatchByIndex(index).interval) {
         if (
           stopWatchEventHandler.pauseUnpauseButtonTextNodeCurrent.textContent.trim() ===
           'Pause'
         ) {
-          pauseStopWatch(this._stopWatches[index], stopWatchEventHandler);
+          pauseStopWatch(
+            this.getStopWatchByIndex(index),
+            stopWatchEventHandler
+          );
         } else {
-          unPauseStopWatch(this._stopWatches[index], stopWatchEventHandler);
+          unPauseStopWatch(
+            this.getStopWatchByIndex(index),
+            stopWatchEventHandler
+          );
         }
       }
     }

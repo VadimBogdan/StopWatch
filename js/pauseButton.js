@@ -1,3 +1,3 @@
-function onPauseButtonClick(b) {
-  stopWatchList.pause(b, stopWatchEventHandler);
+function onPauseButtonClick(button) {
+  stopWatchList.pause(button, stopWatchEventHandler);
 }

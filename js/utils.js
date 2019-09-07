@@ -3,29 +3,19 @@ class StopWatchEventHadler {
     this.stopwatchTextNodeCurrent = null;
     this.pauseUnpauseButtonTextNodeCurrent = null;
   }
-  initializeStartButtonTextNodes(b) {
+  initializeStartButtonTextNodes(button) {
     this.stopwatchTextNodeCurrent =
-      b.parentElement.previousElementSibling.lastChild.firstChild;
+      button.parentElement.previousElementSibling.lastChild.firstChild;
   }
-  initializePauseButtonTextNodes(b) {
+  initializePauseButtonTextNodes(button) {
     this.stopwatchTextNodeCurrent =
-      b.parentElement.previousElementSibling.lastChild.firstChild;
-    this.pauseUnpauseButtonTextNodeCurrent = b.firstChild;
+      button.parentElement.previousElementSibling.lastChild.firstChild;
+    this.pauseUnpauseButtonTextNodeCurrent = button.firstChild;
   }
-  initializeClearButtonTextNodes(b) {
+  initializeClearButtonTextNodes(button) {
     this.stopwatchTextNodeCurrent =
-      b.parentElement.previousElementSibling.lastChild.firstChild;
+      button.parentElement.previousElementSibling.lastChild.firstChild;
     this.pauseUnpauseButtonTextNodeCurrent =
-      b.previousElementSibling.firstChild;
-  }
-  findCorrectStopwatch(stopWatchList) {
-    let index, val;
-    index = stopWatchList._stopWatches.findIndex(stopwatch => {
-      return (val =
-        stopwatch.source ===
-        this.stopwatchTextNodeCurrent.parentElement.parentElement
-          .parentElement);
-    });
-    return index;
+      button.previousElementSibling.firstChild;
   }
 }
